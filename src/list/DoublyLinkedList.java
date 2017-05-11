@@ -80,7 +80,9 @@ public class DoublyLinkedList<E> implements List<E> {
 			
 			data = head.data;
 			head = head.next;
-			head.prev = null;
+			if( head != null ) {
+				head.prev = null;
+			}
 		
 		} else if( size-1 == index ) { // tail 삭제
 			data = tail.data;
