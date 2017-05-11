@@ -75,7 +75,5 @@ public class DoublyLinkedListTest {
 		} catch( IndexOutOfBoundsException e ) {
 			System.out.println( "예외발생:" + e );
 		}
-
 	}
-
 }

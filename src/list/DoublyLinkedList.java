@@ -22,6 +22,37 @@ public class DoublyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
+		
+		if( size < index || index < 0 ) {
+			throw new IndexOutOfBoundsException( "Index:" + index + ", size:" + size );
+		}
+		
+		if( size == index ) {  // tail 삽입 
+			add( element );
+			return;
+		} 
+		
+		if( index == 0 ) { // head 삽입 
+			
+			final Node<E> newNode = new Node<E>( element );
+			newNode.next = head;
+			head.prev = newNode;
+			head = newNode;
+
+		} else { // 중간 삽입
+			Node<E> x = head;
+			for( int i = 0; i < index; i++ ) {
+				x = x.next;
+			}
+		
+			final Node<E> newNode = new Node<E>( element );
+			newNode.prev = x.prev; 
+			newNode.next = x;
+			newNode.prev.next = newNode;
+			newNode.next.prev = newNode;
+		}
+		
+		size++;		
 	}
 
 	@Override
@@ -40,7 +71,35 @@ public class DoublyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		return null;
+		if( size <= index ) {
+			throw new IndexOutOfBoundsException( "Index:" + index + ", size:" + size );
+		}
+		
+		E data = null;
+		if( 0 == index ) {  // head 삭제
+			
+			data = head.data;
+			head = head.next;
+			head.prev = null;
+		
+		} else if( size-1 == index ) { // tail 삭제
+			data = tail.data;
+			tail.prev.next = null;
+			tail = tail.prev;
+		} else { // 중간 삭제
+			
+			Node<E> x = head;
+			for( int i = 0; i < index; i++ ) {
+				x = x.next;
+			}
+
+			data = x.data;
+			x.next.prev = x.prev;
+			x.prev.next = x.next;
+		}
+		
+		size--;
+		return data;		
 	}
 
 	@Override
