@@ -98,4 +98,21 @@ public class ArrayList<E> implements List<E> {
 		return arr;
 	}
 	
+	@Override
+	public Iterator<E> iterator() {
+		return new Iterator<E>(){
+			private int index = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return index < size;
+			}
+
+			@Override
+			public E next() {
+				return data[ index++ ];
+			}
+		};
+	}
+
 }
