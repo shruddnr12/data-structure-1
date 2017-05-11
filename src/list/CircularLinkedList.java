@@ -86,6 +86,27 @@ public class CircularLinkedList<E> implements List<E> {
 		return null;
 	}
 	
+	@Override
+	public Iterator<E> iterator() {
+		return new Iterator<E>() {
+			private int index = 0;
+			private Node<E> x = tail.next;
+			
+			@Override
+			public boolean hasNext() {
+				return index < size;
+			}
+
+			@Override
+			public E next() {
+				E data = x.data;
+				x = x.next;
+				index++;
+				return data;
+			}
+		};
+	}
+	
 	private static class Node<E>{
 		private Node<E> next;
 		private E data;

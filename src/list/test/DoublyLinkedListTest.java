@@ -3,6 +3,7 @@ package list.test;
 import java.util.Arrays;
 
 import list.DoublyLinkedList;
+import list.Iterator;
 import list.List;
 
 public class DoublyLinkedListTest {
@@ -26,6 +27,20 @@ public class DoublyLinkedListTest {
 		for( int i= 0; i < count; i++ ) {
 			System.out.println( i + "번째 항목: " + list.get( i ) );
 		}
+		
+		// foreach문을 사용하기 위한 컬렉션 객체는 java.lang.iterable 인터페이스를 구현 해야 한다.
+		// for( Integer i : list ) {
+		// System.out.println( "====>" + i );
+		// }
+
+		// Iterator 반복자를 통한 리스트 순회
+		System.out.print("반복자 순회 :");
+		Iterator<Integer> it = list.iterator();
+		while (it.hasNext()) {
+			int i = it.next(); // auto unboxing
+			System.out.print(i + "\t");
+		}
+		System.out.print("\n");
 		
 		// add(index, element) 테스트
 		System.out.println( Arrays.toString( list.toArray() ) );		

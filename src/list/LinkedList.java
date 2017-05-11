@@ -126,6 +126,25 @@ public class LinkedList<E> implements List<E> {
 		return arr;
 	}	
 	
+	@Override
+	public Iterator<E> iterator() {
+		return new Iterator<E>() {
+			private Node<E> x = head;
+			
+			@Override
+			public boolean hasNext() {
+				return x != null;
+			}
+
+			@Override
+			public E next() {
+				E data = x.data;
+				x = x.next;
+				return data;
+			}
+		};
+	}
+	
 	private static class Node<E>{
 		private Node<E> next;
 		private E data;
