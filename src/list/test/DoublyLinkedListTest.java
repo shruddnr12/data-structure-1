@@ -1,6 +1,9 @@
-package list;
+package list.test;
 
 import java.util.Arrays;
+
+import list.DoublyLinkedList;
+import list.List;
 
 public class DoublyLinkedListTest {
 

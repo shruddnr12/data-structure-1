@@ -1,6 +1,9 @@
-package list;
+package list.test;
 
 import java.util.Arrays;
+
+import list.CircularLinkedList;
+import list.List;
 
 public class CircularLinkedListTest {
 
