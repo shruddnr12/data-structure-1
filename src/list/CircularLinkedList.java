@@ -83,7 +83,18 @@ public class CircularLinkedList<E> implements List<E> {
 	}
 
 	public E next() {
-		return null;
+		if( tail.next == null ) {
+			return null;
+		}
+		
+		if( pos == null ) {
+			pos = tail.next;
+		}
+		
+		E data = pos.data;
+		pos = pos.next;
+		
+		return data;
 	}
 	
 	@Override

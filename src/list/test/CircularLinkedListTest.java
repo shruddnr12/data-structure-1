@@ -28,6 +28,13 @@ public class CircularLinkedListTest {
 			System.out.println( i + "번째 항목: " + list.get( i ) );
 		}
 		
+		// next() 연산 테스트
+		System.out.print("next() 순회 :");
+		for( int i = 0; i < 10; i++ ) {
+			System.out.print( ( ( CircularLinkedList<Integer> ) list ).next() + "\t" );
+		}
+		System.out.print("\n");
+		
 		// foreach문을 사용하기 위한 컬렉션 객체는 java.lang.iterable 인터페이스를 구현 해야 한다.
 		// for( Integer i : list ) {
 		// System.out.println( "====>" + i );
