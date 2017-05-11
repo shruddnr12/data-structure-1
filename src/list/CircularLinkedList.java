@@ -21,6 +21,32 @@ public class CircularLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
+		if( size < index || index < 0 ) {
+			throw new IndexOutOfBoundsException( "Index:" + index + ", size:" + size );
+		}
+		
+		if( size == index ){  // tail 삽입 
+			add( element );
+			return;
+		} 
+
+		if( index == 0 ) {   // head 삽입 
+		
+			final Node<E> newNode = new Node<E>( element );
+			newNode.next = tail.next;
+			tail.next = newNode;
+
+		} else { // 중간 삽입
+			Node<E> x = tail.next;
+			for( int i = 0; i < index - 1; i++ ) {
+				x = x.next;
+			}
+		
+			final Node<E> newNode = new Node<E>( element, x.next );
+			x.next = newNode;
+		}
+		
+		size++;		
 	}
 
 	@Override
@@ -38,7 +64,35 @@ public class CircularLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		return null;
+		if( size <= index ) {
+			throw new IndexOutOfBoundsException( "Index:" + index + ", size:" + size );
+		}
+
+		size--;
+		
+		if( 0 == index ) {  // head 삭제
+			E data = tail.next.data;
+			tail.next = tail.next.next;
+			return data;
+		} 
+		
+		Node<E> x = tail.next;
+			
+		for( int i = 0; i < index - 1; i++ ) {
+			x = x.next;
+		}
+			
+		E data = x.next.data;
+			
+		if( x.next == tail ) {  // tail 삭제
+			x.next = tail.next;
+			tail = x;
+			return data;
+		}
+		
+		// 중간 삭제
+		x.next = x.next.next;
+		return data;
 	}
 
 	@Override
