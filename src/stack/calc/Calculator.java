@@ -1,27 +1,78 @@
 package stack.calc;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import stack.ArrayList;
+import stack.Iterator;
 import stack.List;
 import stack.Stack;
 import stack.StackException;
 
 public class Calculator {
+	
+	private static Calculator instance;
+	
+	private Calculator() {
+	}
 
-	public void calculate( String exp ) {
+	// singleton method
+	public static Calculator getInstance() {
+		if( instance == null ) {
+			instance = new Calculator();
+		}
+		return instance;
+	}
+	
+	public double calculate( String exp ) {
+		double result = 0f;
+		
 		try {
 			
 			List<String> tokens = parseExp(exp.replaceAll("\\s+", ""));
-			System.out.println( Arrays.toString( tokens.toArray() ) );
+			//System.out.println( Arrays.toString( tokens.toArray() ) );
 			
+			result = operateArimatics( tokens );
 		} catch( Exception e ) {
 			e.printStackTrace();
 		}
+		
+		return result;
 	}
 
+	private double operateArimatics( List<String> tokens ) throws CalculatorException {
+		double result = 0.;
+		
+		try {
+			Stack<Double> arithStack = new Stack<Double>();
+			Iterator<String> it = tokens.iterator();
+			
+			while( it.hasNext() ) {
+				String token = it.next();
+				
+				if( Util.isNumeric( token ) ) {
+					arithStack.push( Double.parseDouble( token ) );
+				} else {
+					Double rValue = arithStack.pop();
+					Double lValue = arithStack.pop();
+					arithStack.push( Util.arith( token, lValue, rValue) );
+				}
+			}
+			
+			if( arithStack.size() != 1 ) {
+				throw new CalculatorException( "Abnormal Expression" );
+			}
+			
+			result = arithStack.pop();
+			
+		} catch( StackException e ) {
+			throw new CalculatorException( "Abnormal Expression" );
+		}
+		
+		
+		return result;
+	}
+	
 	private List<String> parseExp( String infix ) throws StackException {
 		List<String> tokens = new ArrayList<String>();
 		Stack<Character> operatorStack = new Stack<Character>();
@@ -37,7 +88,7 @@ public class Calculator {
 				case '(':
 				case ')':
 					tokenizeOperator( c, tokens, operatorStack );
-					System.out.println( "operatorStack:" + Arrays.toString( operatorStack.toArray() ) );
+					//System.out.println( "operatorStack:" + Arrays.toString( operatorStack.toArray() ) );
 					break;
 				default:
 					tokens.add( String.valueOf( c ) );
@@ -139,6 +190,33 @@ public class Calculator {
 		
 		private static int comp( char op1, char op2 ) {
 			return MAP.get( op1 ) - MAP.get( op2 );
+		}
+	}
+	
+	private static class Util {
+		private static boolean isNumeric( String s ) {
+			return s.matches("-?\\d+(\\.\\d+)?");
+		}
+
+		private static double arith ( 
+			String operator, 
+			Double lValue, 
+			Double rValue ) throws CalculatorException {
+			
+			double result = 0.;
+			if( "+".equals( operator ) ) {
+				result = lValue + rValue;
+			} else if( "-".equals( operator ) ) {
+				result = lValue - rValue;
+			} else if( "*".equals( operator ) ) {
+				result = lValue * rValue;
+			} else if( "/".equals( operator ) ) {
+				result = lValue / rValue;
+			} else {
+				throw new CalculatorException( "Operator Not Supported" );
+			}
+			
+			return result;
 		}
 	}
 }
